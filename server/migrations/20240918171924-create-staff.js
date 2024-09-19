@@ -9,8 +9,19 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      roleId: {
+        type: Sequelize.DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'roles',
+            key: 'id'
+          }          
+        },
+        allowNull: false 
+      },
       name: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
       department: {
         type: Sequelize.STRING
@@ -19,7 +30,9 @@ module.exports = {
         type: Sequelize.STRING
       },
       contact: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true
       },
       createdAt: {
         allowNull: false,

@@ -17,7 +17,7 @@ module.exports = {
         allowNull: false
       },    
       permissions: {
-        type: Sequelize.JSON,
+        type: Sequelize.TEXT,
         allowNull: false
       },
       createdAt: {
