@@ -1,6 +1,7 @@
 'use strict';
 
 const { Model } = require('sequelize');
+const Exception = require('../utils/exception')
 
 module.exports = (sequelize, DataTypes) => {
   class Staff extends Model {
@@ -11,24 +12,63 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Staff.belongsTo(Role, {foreignKey: 'roleId', as: 'role'})
     }
   }
 
   // Initializatio
   Staff.init(
     {
-      name: DataTypes.STRING,
-      // roleId: DataTypes.,
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false
+      },
+      roleId: {
+        type: DataTypes.INTEGER,
+        references: {
+          model: {
+            tableName: 'roles',
+            key: 'id'
+          }          
+        },
+        allowNull: false 
+      },
       department: DataTypes.STRING,
       jobTitle: DataTypes.STRING,
-      contact: DataTypes.STRING
+      contact: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: {
+          msg: "Contact number already exists. Please try with a different contact number"
+        }
+      }
     },
     {
       sequelize,
       modelName: 'Staff',
       tableName: 'staffs'
-    }
+    },
+    {
+      hooks: {
+        beforeCreate: async (staff, options) => {
+          console.log("is it coming here")
+          const role = await sequelize.models.Role.findByPk(staff.roleId);
+          if (!role) {
+            throw new Exception("Invalid roleId. The roleId does not exist.", 400);
+          }
+        },
+        beforeUpdate: async (staff, options) => {
+          const role = await sequelize.models.Role.findByPk(staff.roleId);
+          if (!role) {
+            throw new Exception("Invalid roleId. The roleId does not exist.", 400);
+          }
+        }
+      }    
+    }, 
   );
 
   return Staff;
 };
+
+
+   

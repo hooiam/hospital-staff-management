@@ -1,18 +1,8 @@
 'use strict'
 
-const { Role, Permission } = require('../models')
-const utils = require('../utils')
+const { Role } = require('../models')
+const Exception = require('../utils/exception')
 
-/**
- * Function to validate all permissions received into request body
- * @param {Array} requestedPermissions Permissoins received in request body
- * @returns Boolean
- */
-const validatePermission = async(requestedPermissions) => {
-  const allPermssions = await Permission.findAll({ attributes: ['name']})
-  const allPermissionNames = allPermssions.dataCollector('name')
-  return requestedPermissions.every(permission => allPermissionNames.includes(permission))
-}
 
 /**
  * Function to create a new role
@@ -25,13 +15,6 @@ exports.createRole = async (req, res, next) => {
   try {
     const { name, permissions} = req.body;
 
-    // Validation errors
-    if (!name || !permissions || !Array.isArray(permissions) || permissions.length <= 0) {
-      return res.status(400).json({ message: 'Role name and permissions are required', error: "Bad request" });
-    }
-    // Validate permissions
-    if(!validatePermission(permissions)) return res.status(400).json({ message: 'Invalid permissions', error: "Bad request" });
-
     const newRole = await Role.create({
       name,
       permissions: permissions.toString()
@@ -43,10 +26,53 @@ exports.createRole = async (req, res, next) => {
     });
   } catch (error) {
     console.log(error)
-    res.status(500).json({
-      message: 'Failed to create role record',
-      error: error.message
-    });
+    next(error)
+  }
+}
+
+/**
+ * Function to get all roles
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.getRoles = async (req, res, next) => {
+  try {
+    // TODO: Implement pagination
+    const roles = await Role.findAll()
+    res.status(200).json({message: "Roles fetched successfully", data: roles}) 
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
+}
+
+/**
+ * Function to update a role by it's ID
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.updateRole = async(req, res, next) => {
+  try {
+    const { name, permissions} = req.body;
+
+    const [updateRowCount] = await Role.update(
+      { name, permissions: permissions.toString()},
+      {
+        where: {
+          id: req.params.id,
+        },
+      }
+    );
+    if(updateRowCount === 0) {
+      throw new Exception("Invalid request ! Could not find any record to update", 400)
+    } else {
+      res.status(200).json({message: "Role updated successfully"}) 
+    }
+  } catch(error) {
+    console.log(error)
+    next(error)
   }
 }
 
@@ -56,14 +82,20 @@ exports.createRole = async (req, res, next) => {
  * @param {*} res 
  * @param {*} next 
  */
-exports.getRoles = (req, res, next) => {
-
-}
-
-exports.updateRole = (req, res, next) => {
-
-}
-
-exports.deleteRole = (req, res, next) => {
-
+exports.deleteRole = async(req, res, next) => {
+  try {
+    const deleteRowCount = await Role.destroy({
+      where: {
+        id: req.params.id
+      },
+    });
+    if(deleteRowCount === 0) {
+      throw new Exception("Invalid request ! Could not find any record to delete", 400)
+    } else {
+      res.status(200).json({message: "Role deleted successfully"}) 
+    }
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
 }
