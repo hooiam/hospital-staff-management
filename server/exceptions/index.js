@@ -6,13 +6,13 @@ const errorHandler = (err, req, res, next) => {
   // Foreign key exception handling
   if (err.name === 'SequelizeForeignKeyConstraintError') {
     return res.status(400).json({
-      message: "Invalid roleId. The roleId does not exist"
+      message: "Invalid roleId or this operation can't be performed"
     });
   }
 
   // Contact number unique key error handling
   if (err.name === 'SequelizeUniqueConstraintError') {
-    return res.status(400).json({
+    return res.status(409).json({
       message: err.errors[0].message
     });
   }

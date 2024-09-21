@@ -17,7 +17,8 @@ module.exports = {
             key: 'id'
           }          
         },
-        allowNull: false 
+        allowNull: false,
+        onDelete: 'CASCADE'
       },
       name: {
         type: Sequelize.STRING,

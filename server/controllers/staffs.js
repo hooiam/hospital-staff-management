@@ -1,5 +1,6 @@
 'use strict'
 
+const { Op } = require('sequelize');
 const { Staff } = require('../models')
 const Exception = require('../utils/exception')
 
@@ -11,7 +12,6 @@ const Exception = require('../utils/exception')
  */
 exports.createStaff = async(req, res, next) => {
   try {    
-    console.log("Iam here")
     const { name, roleId, department, jobTitle, contact} = req.body;
     // create a new staff record
     const newStaff = await Staff.create({
@@ -27,7 +27,6 @@ exports.createStaff = async(req, res, next) => {
       data: newStaff
     });
   } catch (error) {
-    console.log("error controller", error)
     next(error)
   }
 }
@@ -41,7 +40,27 @@ exports.createStaff = async(req, res, next) => {
 exports.getStaffs = async(req, res, next) => {
   try {
     // TODO: Implement pagination
-    const staffs = await Staff.findAll()
+    const { keyword } = req.query;
+    
+    let condition = {};
+
+    // If a keyword is provided, add search conditions
+    // TODO: Need to implement keyword search in roles associates
+    if (keyword) {
+      condition = {
+        [Op.or]: [
+          { name: { [Op.like]: `%${keyword}%` } },  
+          { department: { [Op.like]: `%${keyword}%` } },
+          { jobTitle: { [Op.like]: `%${keyword}%` } },
+          { contact: { [Op.like]: `%${keyword}%` } }  
+        ]
+      };      
+    }
+
+    const staffs = await Staff.findAll({
+      where: condition,
+      include: "role"
+    })
     res.status(200).json({message: "Staff records fetched successfully", data: staffs}) 
   } catch(error) {
     console.log(error)

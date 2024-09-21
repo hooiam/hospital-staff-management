@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
-      Staff.belongsTo(Role, {foreignKey: 'roleId', as: 'role'})
+      // Defining the relation between Staff and Role model
+      Staff.belongsTo(models.Role, { foreignKey: 'roleId', as: 'role' })
     }
   }
 
@@ -31,7 +31,8 @@ module.exports = (sequelize, DataTypes) => {
             key: 'id'
           }          
         },
-        allowNull: false 
+        allowNull: false,
+        onDelete: 'CASCADE'
       },
       department: DataTypes.STRING,
       jobTitle: DataTypes.STRING,
@@ -39,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
         unique: {
-          msg: "Contact number already exists. Please try with a different contact number"
+          msg: "Staff already exists. Please try with another contact number"
         }
       }
     },
