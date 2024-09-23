@@ -20,7 +20,7 @@ exports.login = async (req, res, next) => {
       user = {
         id: adminConfig.id,
         name: adminConfig.name,
-        userType: adminConfig.userType,
+        type: adminConfig.type,
       }
     } else { // staff login
       const staff = await Staff.findOne({ where: { contact: password } })
@@ -28,7 +28,7 @@ exports.login = async (req, res, next) => {
       user = {
         id: staff.id,
         name: staff.name,
-        userType: "staff"
+        type: "staff"
       }
     }
     const token = generateToken(user);

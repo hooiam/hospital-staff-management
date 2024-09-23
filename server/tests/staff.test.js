@@ -15,7 +15,7 @@ describe('Staff API Tests', () => {
   beforeEach(() => {
     // Mock jwt.verify to always return a valid user
     sinon.stub(jwt, 'verify').callsFake((token, secret, callback) => {
-      callback(null, { id: 55, name: 'FiftyFive', userType: 'admin' }); // Mock valid user
+      callback(null, { id: 55, name: 'FiftyFive', type: 'admin' }); // Mock valid user
     })
   })
 

@@ -19,7 +19,13 @@ module.exports = (sequelize, DataTypes) => {
   Role.init(
     {
       name: DataTypes.STRING,
-      permissions: DataTypes.TEXT
+      permissions: {
+        type: DataTypes.TEXT,
+        get() {
+          const rawValue = this.getDataValue('permissions');
+          return rawValue ? rawValue.split(",") : null;
+        }
+      }
     }, 
     {
       sequelize,

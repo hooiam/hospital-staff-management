@@ -12,7 +12,7 @@ const activityLogger = (req, res, next) => {
   try {
     const { method, originalUrl, body, user } = req
     const userId = user ? user.id : 'anonymous'
-    const userType = user ? user.userType : 'anonymous'
+    const userType = user ? user.type : 'anonymous'
     const userName = user ? user.name : 'anonymous'
     // filtering sensitive information like password from request body for logging
     const {password, ...filteredBody} = body

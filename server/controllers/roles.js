@@ -48,6 +48,22 @@ exports.getRoles = async (req, res, next) => {
 }
 
 /**
+ * Function to get a role by ID
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.getRoleById = async (req, res, next) => {
+  try {
+    const role = await Role.findByPk(req.params.id)
+    res.status(200).json({message: "Roles fetched successfully", data: role}) 
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
+}
+
+/**
  * Function to update a role by it's ID
  * @param {*} req 
  * @param {*} res 

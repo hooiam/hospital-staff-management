@@ -1,6 +1,6 @@
 {
   "id": "55",
-  "userType": "admin",
+  "type": "admin",
   "name": "FiftyFive",
   "password": "55",
   "jobTitle": "administrator",

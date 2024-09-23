@@ -69,6 +69,24 @@ exports.getStaffs = async(req, res, next) => {
 }
 
 /**
+ * Function to get a staff by ID
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */ 
+exports.getStaffById = async(req, res, next) => {
+  try {
+    const staff = await Staff.findByPk(req.params.id, {
+      include: "role"
+    })
+    res.status(200).json({message: "Staff records fetched successfully", data: staff}) 
+  } catch(error) {
+    console.log(error)
+    next(error)
+  }
+}
+
+/**
  * Function to update a staff record
  * @param {*} req 
  * @param {*} res 

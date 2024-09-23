@@ -1,0 +1,34 @@
+# services:
+#   mysql:
+#     image: mysql:latest
+#     restart: always
+#     environment:
+#       - MYSQL_ROOT_PASSWORD=root
+#       - MYSQL_DATABASE=hsm
+#       - MYSQL_USER=admin
+#       - MYSQL_PASSWORD=admin
+#       - MYSQL_HOST=mysql
+#     ports:
+#       - "3306:3306"
+
+#   server:
+#     build: ./server
+#     volumes:
+#       - /app/node_modules
+#       - ./server:/app
+#     environment:
+#       - MYSQL_DATABASE=hsm
+#       - MYSQL_USER=admin
+#       - MYSQL_PASSWORD=admin
+#       - MYSQL_HOST=mysql
+#       - PORT=5000
+#     ports:
+#       - "5000:5000"
+
+#   client:
+#     build: ./client
+#     volumes:
+#       - /app/node_modules
+#       - ./client:/app
+#     ports:
+#       - "3000:3000"
