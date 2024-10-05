@@ -23,7 +23,7 @@ The system allows you to perform CRUD operations on hospital staff, manage roles
 
 ### Prerequisite 
 
-*In order to setup and run this project in local please make sure you have installed **NodeJS** and **MySQL** into your machine. The compatible versions are **v21.7.1** and **8.0.39** respectively*
+*In order to setup and run this project in local please make sure you have installed **NodeJS** and **MySQL** into your machine. The compatible versions are **v21.7.1** and **v8.0.39** respectively*
 
 ### Clone the repository
 
@@ -45,6 +45,9 @@ Next, please run the following command from your terminal or command promt
 npm i && npm start
 
 ```
+### Unit Testing
+To run unit testing, please run the below command
+`npm test`
 
 ### Fronted Setup
 
@@ -62,9 +65,6 @@ Visit http://localhost:5174/ to login. Deafult admin password i.e `55` will be p
 
 ***Please note - The contact number for each staff is considered as password of the system. So when a staff wants to login they need to use their respective contact number for login. For admin it's `55`***
 
-## Unit Testing
-To run unit testing, please run the below command
-`npm test`
 
 ## Technical Informations
  - For database layer, used [Sequelize](https://sequelize.org/) ORM, hooks and associates to create, read, update and delete records. 
@@ -76,7 +76,7 @@ To run unit testing, please run the below command
 ## What's Next?
 - WIP on docker composer setup to containerize this entire app
 - Enhancement in frontend and backend app in terms of permformace and security and bug fixes
-- Continue to buile this by addming more features to it
+- Continue to buile this by adding more features to it
 
 ## Report a bug
 To report a bug please create a issue. I will look into it once I am free and try to resolve it.
